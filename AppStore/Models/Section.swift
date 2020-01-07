@@ -8,26 +8,17 @@
 
 import Foundation
 
+/*
+The Section type will decide what layout the UICollectionView will use for that section
+ */
 enum SectionType: Int, CaseIterable {
-    case singleList
-    case doubleList
-    case tripleList
-    case categoryList
-    
-    init(_ section: Int) {
-        self = SectionType(rawValue: section)!
-    }
-    
-    var numberOfCells: Int {
-        switch self {
-        case .singleList:   return 3
-        case .doubleList:   return 6
-        case .tripleList:   return 9
-        case .categoryList: return 5
-        }
-    }
+    case singleList     // Featured
+    case doubleList     // This weeks favorites
+    case tripleList     // Learn something
+    case categoryList   // Top Categories
 }
 
+// Descibes the info needed for a Section
 struct Section: Hashable {
     let id: Int
     let type: SectionType

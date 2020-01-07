@@ -20,10 +20,10 @@ import UIKit
 class AppsPresenter {
     
     private var data: [Section: [SectionData]] = [:]
-    private var orderedSections: [Section] = []
+    private var orderedSections: [Section] = []     // As a dictionary is unordered we need a reference array (not optimal)
     
     init() {
-        // Featured
+        // First section: Featured
         let section1 = Section(id: 1, type: .singleList, title: nil, subtitle: nil)
         let featuredApps = [App(id: 1, type: "GET FIT", name: "GFA", subTitle: "Generic Fitness App", image: UIImage(named: "desert")!, hasIAP: true),
                             App(id: 2, type: "SOMETHING NEW", name: "Calorie Counter App", subTitle: "Very Original concept", image: UIImage(named: "food")!, hasIAP: true),
@@ -31,7 +31,7 @@ class AppsPresenter {
         data[section1] = featuredApps
         orderedSections.append(section1)
         
-        // This weeks favorites
+        // Second section: This weeks favorites
         let section2 = Section(id: 2, type: .doubleList, title: "This weeks favorites", subtitle: nil)
         let favorites = [App(id: 4, type: "Photo", name: "FilmStuff", subTitle: "Photo effects and filters", image: UIImage(named: "food")!, hasIAP: true),
                          App(id: 5, type: "Shopping", name: "Get Shopping", subTitle: "Simple grocery list", image: UIImage(named: "temple")!, hasIAP: false),
@@ -42,8 +42,8 @@ class AppsPresenter {
                          App(id: 10, type: "Learning", name: "Memo", subTitle: "Remind your self of your routine", image: UIImage(named: "food")!, hasIAP: false)]
         data[section2] = favorites
         orderedSections.append(section2)
-        
-        // Learn something
+
+        // Third section: Learn something
         let section3 = Section(id: 3, type: .tripleList, title: "Learn something", subtitle: "Self development is key")
         let learning = [App(id: 11, type: "Learning", name: "Momi", subTitle: "Programming", image: UIImage(named: "containers")!, hasIAP: true),
                         App(id: 12, type: "Learning", name: "Tod", subTitle: "Feed your brain", image: UIImage(named: "oldTemple")!, hasIAP: false),
@@ -56,8 +56,8 @@ class AppsPresenter {
                         App(id: 19, type: "Learning", name: "TapTapRev", subTitle: "Reflexes", image: UIImage(named: "containers")!, hasIAP: true)]
         data[section3] = learning
         orderedSections.append(section3)
-        
-        // Categories
+
+        // Fourth section: Categories
         let section4 = Section(id: 4, type: .categoryList, title: "Top Categories", subtitle: nil)
         let categories = [Category(id: 1, name: "Apple watch apps", icon: UIImage(named: "desert")!),
                           Category(id: 1, name: "AR Apps", icon: UIImage(named: "temple")!),
@@ -95,6 +95,11 @@ class AppsPresenter {
         } else {
             print("Error getting category for indexPath: \(indexPath)")
         }
+    }
+    
+    func sectionType(for sectionIndex: Int) -> SectionType {
+        let section = orderedSections[sectionIndex]
+        return section.type
     }
     
     // Supplementary Views

@@ -11,7 +11,7 @@ import UIKit
 class ViewController: UIViewController {
     
     // MARK: - Properties -
-    private var presenter = AppsPresenter()
+    private var presenter = AppsPresenter()         // Handles all the data
     private var collectionView: UICollectionView!
 
     // MARK: - Life cycle -
@@ -23,6 +23,8 @@ class ViewController: UIViewController {
     }
 
     // MARK: - Setup methods -
+    /// Constructs the UICollectionView and adds it to the view.
+    /// Registers all the Cells and Views that the UICollectionView will need
     private func setupCollectionView() {
         collectionView = UICollectionView.init(frame: .zero,
                                                collectionViewLayout: makeLayout())
@@ -53,13 +55,15 @@ class ViewController: UIViewController {
 
     
     // MARK: - Collection View Helper Methods -
+    // In this section you can find all the layout related code
+    
     private func makeLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout { (sectionIndex: Int, layoutEnv: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-            switch SectionType(sectionIndex) {
+            switch self.presenter.sectionType(for: sectionIndex) {
             case .singleList:   return self.createSingleListSection()
             case .doubleList:   return self.createDoubleListSection()
             case .tripleList:   return self.createTripleListSection()
-            case .categoryList: return self.createCategoryListSection(for: SectionType.categoryList.numberOfCells)
+            case .categoryList: return self.createCategoryListSection(for: self.presenter.numberOfItems(for: sectionIndex))
             }
         }
         
@@ -174,8 +178,7 @@ extension ViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let section = SectionType(indexPath.section)
-        switch section {
+        switch presenter.sectionType(for: indexPath.section) {
         case .singleList:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FeaturedCell.identifier, for: indexPath) as? FeaturedCell else {
                 fatalError("Could not dequeue FeatureCell")

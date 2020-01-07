@@ -9,7 +9,9 @@
 import Foundation
 import UIKit
 
+// Token protocol to avoid using "Any" in the dataSource, as we are working with App and Category
 protocol SectionData { }
+
 
 struct App: SectionData {
     let id: Int
