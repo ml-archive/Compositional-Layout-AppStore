@@ -8,8 +8,7 @@
 
 import UIKit
 
-class MediumAppCell: UICollectionViewCell {
-    static let reuseIdentifier: String = "MediumAppCell"
+class MediumAppCell: UICollectionViewCell, AppConfigurable {
     
     let nameLabel = UILabel()
     let subtitleLabel = UILabel()
@@ -45,10 +44,11 @@ class MediumAppCell: UICollectionViewCell {
         innerStackView.distribution = .fillProportionally
         
         let outerStackView = UIStackView(arrangedSubviews: [imageView, innerStackView])
-        outerStackView.translatesAutoresizingMaskIntoConstraints = false
         outerStackView.alignment = .center
         outerStackView.spacing = 10
         outerStackView.distribution = .fillProportionally
+        
+        outerStackView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(outerStackView)
         
         NSLayoutConstraint.activate([

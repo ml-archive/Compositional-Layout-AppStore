@@ -9,7 +9,9 @@
 import Foundation
 import UIKit
 
-struct App {
+protocol SectionData { }
+
+struct App: SectionData {
     let id: Int
     let type: String
     let name: String

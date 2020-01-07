@@ -8,8 +8,7 @@
 
 import UIKit
 
-class FeaturedCell: UICollectionViewCell {
-    static let reuseIdentifier: String = "FeaturedCell"
+class FeaturedCell: UICollectionViewCell, AppConfigurable {
     
     let typeLabel = UILabel()
     let nameLabel = UILabel()
@@ -28,8 +27,9 @@ class FeaturedCell: UICollectionViewCell {
         separator.backgroundColor = .quaternaryLabel
         
         let stackView = UIStackView(arrangedSubviews: [separator, typeLabel, nameLabel, subtitleLabel, imageView])
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
+        
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(stackView)
         
         NSLayoutConstraint.activate([
