@@ -11,8 +11,8 @@ import UIKit
 enum Section: Int, CaseIterable {
     case singleList
     case doubleList
-//    case tripleList
-//
+    case tripleList
+
 //    case singleApp
     
     init(_ section: Int) {
@@ -23,6 +23,7 @@ enum Section: Int, CaseIterable {
         switch self {
         case .singleList: return 3
         case .doubleList: return 6
+        case .tripleList: return 9
         }
     }
     
@@ -32,14 +33,23 @@ enum Section: Int, CaseIterable {
             return App(id: index,
                        type: "Test Type",
                        name: "Test Name \(index)",
-                       subTitle: "Test subtitle \(index)",
-                       image: UIImage(named: "BlueOrange")!)
+                subTitle: "Test subtitle \(index)",
+                image: UIImage(named: "BlueOrange")!,
+                hasIAP: true)
         case .doubleList:
             return App(id: index+10,
                        type: "Double list",
                        name: "Double list app \(index)",
-                    subTitle: "Double list app",
-                image: UIImage(named: "BlueOrange")!)
+                subTitle: "Double list app",
+                image: UIImage(named: "BlueOrange")!,
+                hasIAP: true)
+        case .tripleList:
+            return App(id: index+100,
+                       type: "Triple list",
+                       name: "Triple list app \(index)",
+                subTitle: "Triple list app",
+                image: UIImage(named: "BlueOrange")!,
+                hasIAP: true)
         }
     }
 }
@@ -78,6 +88,7 @@ class ViewController: UIViewController {
                                 withReuseIdentifier: SectionHeader.reuseableIdentifier)
         collectionView.register(FeaturedCell.self, forCellWithReuseIdentifier: FeaturedCell.reuseIdentifier)
         collectionView.register(MediumAppCell.self, forCellWithReuseIdentifier: MediumAppCell.reuseIdentifier)
+        collectionView.register(SmallAppCell.self, forCellWithReuseIdentifier: SmallAppCell.reuseIdentifier)
     }
 
     
@@ -87,6 +98,7 @@ class ViewController: UIViewController {
             switch Section(sectionIndex) {
             case .singleList: return self.createSingleListSection()
             case .doubleList: return self.createDoubleListSection()
+            case .tripleList: return self.createTripleListSection()
             }
         }
         
@@ -120,11 +132,12 @@ class ViewController: UIViewController {
         layoutItem.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 5)
 
         let layoutGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.95),
-                                                     heightDimension: .estimated(142))
+                                                     heightDimension: .estimated(165))
         
         let layoutGroup = NSCollectionLayoutGroup.vertical(layoutSize: layoutGroupSize,
                                                            subitem: layoutItem,
                                                            count: 2)
+        layoutGroup.interItemSpacing = .fixed(8)
 
         let layoutSection = NSCollectionLayoutSection(group: layoutGroup)
         layoutSection.orthogonalScrollingBehavior = .groupPagingCentered
@@ -132,6 +145,25 @@ class ViewController: UIViewController {
         let layoutSectionHeader = createSectionHeader()
         layoutSection.boundarySupplementaryItems = [layoutSectionHeader]
 
+        return layoutSection
+    }
+    
+    private func createTripleListSection() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
+                                              heightDimension: .fractionalHeight(0.33))
+        let layoutItem = NSCollectionLayoutItem(layoutSize: itemSize)
+        layoutItem.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 5)
+        
+        let layoutGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.95),
+                                                     heightDimension: .fractionalWidth(0.55))
+        let layoutGroup = NSCollectionLayoutGroup.vertical(layoutSize: layoutGroupSize,
+                                                           subitems: [layoutItem])
+        let layoutSection = NSCollectionLayoutSection(group: layoutGroup)
+        layoutSection.orthogonalScrollingBehavior = .groupPagingCentered
+        
+        let layoutSectionHeader = createSectionHeader()
+        layoutSection.boundarySupplementaryItems = [layoutSectionHeader]
+        
         return layoutSection
     }
     
@@ -171,6 +203,14 @@ extension ViewController: UICollectionViewDataSource {
         case .doubleList:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MediumAppCell.reuseIdentifier, for: indexPath) as? MediumAppCell else {
                 fatalError("Could not dequeue MediumAppCell")
+            }
+            
+            cell.configure(with: section.app(for: indexPath.row))
+            
+            return cell
+        case .tripleList:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SmallAppCell.reuseIdentifier, for: indexPath) as? SmallAppCell else {
+                fatalError("Could not dequeue SmallAppCell")
             }
             
             cell.configure(with: section.app(for: indexPath.row))

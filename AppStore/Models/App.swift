@@ -15,4 +15,5 @@ struct App {
     let name: String
     let subTitle: String
     let image: UIImage
+    let hasIAP: Bool
 }
