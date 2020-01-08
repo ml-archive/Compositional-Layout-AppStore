@@ -19,9 +19,10 @@ enum SectionType: Int, CaseIterable {
 }
 
 // Descibes the info needed for a Section
-struct Section: Hashable {
+struct Section {
     let id: Int
     let type: SectionType
     let title: String?
     let subtitle: String?
+    let data: [SectionData]
 }
