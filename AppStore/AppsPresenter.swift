@@ -21,6 +21,7 @@ class AppsPresenter {
     
     private var dataSource: [Section] = []
     
+    // We will initialise the dataSource in the init method.
     init() {
         // First section: Featured
         let featuredApps = [App(id: 1, type: "GET FIT", name: "GFA", subTitle: "Generic Fitness App", image: UIImage(named: "desert")!, hasIAP: true),
@@ -67,17 +68,22 @@ class AppsPresenter {
         dataSource.append(section4)
     }
     
-    // Collection View
+    // MARK: Collection View
+    
+    /// Returns the number of sections in the dataSource
     var numberOfSections: Int {
         return dataSource.count
     }
     
+    /// Returns the number of items for the given section
     func numberOfItems(for sectionIndex: Int) -> Int {
         let section = dataSource[sectionIndex]
         return section.data.count
     }
     
-    // Cells
+    // MARK: Cells
+    
+    /// Configures the given item with the app appropriate for the given IndexPath
     func configure(item: AppConfigurable, for indexPath: IndexPath) {
         let section = dataSource[indexPath.section]
         if let app = section.data[indexPath.row] as? App {
@@ -87,6 +93,7 @@ class AppsPresenter {
         }
     }
     
+    /// Configures the given item with the category appropriate for the given IndexPath
     func configure(item: CategoryConfigurable, for indexPath: IndexPath) {
         let section = dataSource[indexPath.section]
         if let category = section.data[indexPath.row] as? Category {
@@ -96,17 +103,21 @@ class AppsPresenter {
         }
     }
     
+    /// Returns the SectionType for the given sectionIndex
     func sectionType(for sectionIndex: Int) -> SectionType {
         let section = dataSource[sectionIndex]
         return section.type
     }
     
-    // Supplementary Views
+    // MARK: Supplementary Views
+    
+    /// Returns the title for the given sectionIndex
     func title(for sectionIndex: Int) -> String? {
         let section = dataSource[sectionIndex]
         return section.title
     }
     
+    /// Returns the subtitle for the given sectionIndex
     func subtitle(for sectionIndex: Int) -> String? {
         let section = dataSource[sectionIndex]
         return section.subtitle

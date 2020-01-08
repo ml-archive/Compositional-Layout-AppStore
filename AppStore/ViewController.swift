@@ -219,6 +219,7 @@ class ViewController: UIViewController {
         return layoutSection
     }
     
+    /// Creates a Layout for the SectionHeader
     private func createSectionHeader() -> NSCollectionLayoutBoundarySupplementaryItem {
         // Define size of Section Header
         let layoutSectionHeaderSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.95),
@@ -235,14 +236,17 @@ class ViewController: UIViewController {
 // MARK: - UICollectionViewDataSource -
 
 extension ViewController: UICollectionViewDataSource {
+    /// Tells the UICollectionView how many sections are needed
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return presenter.numberOfSections
     }
     
+    /// Tells the UICollectionView how many items the requested sections needs
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return presenter.numberOfItems(for: section)
     }
     
+    /// Constructs and configures the item needed for the requested IndexPath
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         // Checks what section type we should use for this indexPath so we use the right cells for that section
         switch presenter.sectionType(for: indexPath.section) {
@@ -282,6 +286,8 @@ extension ViewController: UICollectionViewDataSource {
         }
     }
     
+    /// Constructs and configures the Supplementary Views for the UICollectionView
+    /// In this project only used for the Section Headers
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SectionHeader.identifier, for: indexPath) as? SectionHeader else {
             fatalError("Could not dequeue SectionHeader")
